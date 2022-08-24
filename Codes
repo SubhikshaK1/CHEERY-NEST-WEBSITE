@@ -1,0 +1,346 @@
+*buynew.html
+<html>
+<head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+
+  form{
+    width: 700px;
+    padding: 130px;
+    margin: auto;
+    background: url(newbuybg.png);
+    background-size:100% 100%;
+    font-size: 20px;
+    border-radius: 0px;
+    border-style: none;
+    color: black;
+  }
+        fieldset{
+            border: none;
+            border-radius: 2px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            padding: 0 .625em;
+        }
+        label{
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 6px;
+            text-align: right;
+            width: 150px;
+            vertical-align: top;
+        }
+        input{
+            font-size: inherit;
+        }
+       input[type='radio']:checked:after {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px; 
+        background-color: #AE615F;
+        content: '';
+        display: inline-block;
+        border: 2px solid white;
+}
+</style>
+<body>
+<h1 align="center">Buy form </h1>
+<form action="buy2.php" method="post">
+<textarea name="location" rows="3" cols="50" style="font-size:14pt" placeholder="Location Required" ></textarea>&nbsp <br><br>
+<label for="proptyp"><I>Property Type </I></label>&nbsp &nbsp 
+<select name="proptyp" id="proptyp">
+<option value="flat">Flat</option>
+<option value="land">Land</option>
+<option value="indhouse">Independent house</option>
+</select><br><br>
+<I>Property details</I>&nbsp &nbsp<input type="radio" id="bhk" name="bhk" value="1">  1 BHK &nbsp &nbsp
+<input type="radio"  name="bhk" value="2">  2 BHK  &nbsp &nbsp
+<input type="radio" name="bhk" value="3">   3 BHK &nbsp &nbsp
+<input type="radio" name="bhk" value="4">   4 BHK <br><br>
+<textarea name="Comment" rows="2" cols="40" style="font-size:14pt" placeholder="Comment" ></textarea>&nbsp <br><br>
+<input type="submit" value="submit">
+</form>
+</body>
+</html>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*buy2.php
+<html>
+<style>
+body {
+  background-image: url("phpbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: 100%; 
+}
+table, th, td {
+  border: 4px solid #4E2246;
+  border-collapse: collapse;
+}
+</style>
+
+<body text="#424672" >
+	<center>
+
+<?php
+$con=mysqli_connect("localhost","root","","test");
+if(mysqli_connect_error())
+{
+echo "failed to connect".mysqli_connect_error();
+}
+$location=$_POST['location'];
+$proptyp=$_POST['proptyp'];
+$bhk=$_POST['bhk'];
+mysqli_query($con,$ab="insert into buy values('".$location."', '".$proptyp."', '".$bhk."')");
+echo "<h1>Record Noted</h1>";
+echo $row["location"]; 
+echo $row["landmark"]; 
+echo $row["phonenumber"];
+echo $row["proptyp"];
+echo $row["bhk"];
+echo $row["sqrf"];
+echo $row["pfac"];
+echo $row["ga"];
+echo $row["lf"];
+echo $row["av"];
+echo $row["aa"];
+echo $row["filename"];
+
+$sql="select distinct s.location,s.proptyp,s.bhk, s.landmark, s.phonenumber, s.sqrf, s.pfac, s.ga, s.lf, s.av, s.aa,s.filename    from sell s, buy b where b.location = s.location or b.proptyp= s.proptyp  or b.bhk = s.bhk;";
+$result= mysqli_query($con,$sql);
+if(mysqli_num_rows($result)>0)
+{
+	echo "<h2><center> Information Provided: </center></h2>";
+	echo "<table border='5'  >
+<tr><center>
+<th><h3>location</h3></th>
+<th><h3>landmark</h3></th>
+<th><h3>phonenumber</h3></h3></th>
+<th><h3>Property Type</h3></th>
+<th><h3>Property Details</h3></th>
+<th><h3>Approximate square feet</h3></th>
+<th><h3>Parking Facility</h3></th>
+<th><h3>Government Approved</h3></th>
+<th><h3>Loan facility</h3></th>
+<th><h3>Asset Value</h3></th>
+<th><h3>Advance Amount</h3></th>
+<th><h3>filename</h3></th>
+</center>
+</tr>";
+while($row=mysqli_fetch_assoc($result))
+{
+echo"<h3><tr></h3>";
+echo"<td><h3>".$row["location"]."</h3></td>";
+echo"<td><h3>".$row["landmark"]."</h3></td>";
+echo"<td><h3>".$row["phonenumber"]."</h3></td>";
+echo"<td><h3>".$row["proptyp"]."</h3></td>";
+echo"<td><h3>".$row["bhk"]."</h3></td>";
+echo"<td><h3>".$row["sqrf"]."</h3></td>";
+echo"<td><h3>".$row["pfac"]."</h3></td>";
+echo"<td><h3>".$row["ga"]."</h3></td>";
+echo"<td><h3>".$row["lf"]."</h3></td>";
+echo"<td><h3>".$row["av"]."</h3></td>";
+echo"<td><h3>".$row["aa"]."</h3></td>";
+echo "<td><h3>"."<a href =".$row["filename"].">  CLICK TO VIEW HOME IMAGE</a>"."</h3></td>";
+
+echo"<h3></tr></h3>";
+}
+echo "</table>";
+}
+else
+{
+echo "No rows found";
+}
+mysqli_close($con);
+?>
+</center>
+</body>
+</html>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*salenew.html
+<html>
+<head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  form{
+    width: 900px;
+    padding: 20px;
+    margin: auto;
+    background: url(salenewbg.png);
+    background-size:100% 100%;
+    font-size: 20px;
+    border-radius: 0px;
+    border-style: none;
+    color: white;
+  }
+        fieldset{
+            border: none;
+            border-radius: 2px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            padding: 0 .625em;
+        }        
+        input{
+            font-size: inherit;
+        }
+       input[type='radio']:checked:after {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px; 
+        background-color: #AE615F;
+        content: '';
+        display: inline-block;
+        border: 2px solid white;
+
+</style>
+
+</head>
+<body>
+
+<h1 align="center">Sale form </h1><br>
+<form action="salesfinal.php" method="post">
+<fieldset>
+<font color="#080100">
+
+<textarea name="location" rows="3" cols="50" style="font-size:14pt" placeholder="Location of the house" ></textarea>&nbsp <br><br>
+<textarea name="landmark" rows="1" cols="50" style="font-size:14pt" placeholder="Landmark" ></textarea>&nbsp <br><br>
+<i>Phone Number</i>&nbsp<input type="text" name="phonenumber" align="left"><br><br>
+<i>Property Type</i>&nbsp<select name="proptyp" align="left">
+<option value="flat">Flat</option>
+<option value="land">Land</option>
+<option value="indhouse">Independent house</option>
+</select><br><br>
+<I>Approximate square feet</I>&nbsp <input type="number" name="sqrf"><br><br>
+
+<I>Government Approved</I>&nbsp &nbsp &nbsp  <input type="radio" name="ga" value="yes">  Yes &nbsp &nbsp &nbsp <input type="radio" name="ga" value="no">   No <br><br>
+<I>Loan facility</I>&nbsp &nbsp &nbsp  <input type="radio" name="lf" value="yes">  Yes &nbsp &nbsp &nbsp <input type="radio" name="lf" value="no">   No <br><br>
+
+<I>Asset Value </I> Rs.&nbsp<input type="text" name="av" placeholder="(in numbers)"><br><br>
+
+<I>Advance Amount</I> Rs.&nbsp <input type="text" name="aa" placeholder="(in numbers)"><br><br>
+
+<b>If required</b><br><br>
+<I>Property details</I>&nbsp &nbsp<input type="radio" id="bhk" name="bhk" value="1">  1 BHK &nbsp &nbsp
+<input type="radio"  name="bhk" value="2">  2 BHK  &nbsp &nbsp
+<input type="radio" name="bhk" value="3">   3 BHK &nbsp &nbsp
+<input type="radio" name="bhk" value="4">   4 BHK <br><br>
+<I>Parking Facility</I>&nbsp &nbsp &nbsp<input type="radio" name="pfac" value="yes">  Yes &nbsp &nbsp &nbsp<input type="radio" name="pfac" value="no">   No
+<br><br>
+<i>Upload pic of your house </i>
+<textarea name="filename" rows="3" cols="50" style="font-size:14pt" placeholder="drive link of the house" ></textarea>&nbsp <br><br>
+</fieldset>
+<input type="submit" name ="Submit" value="Submit">
+</form>
+</body>
+</html>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+salesfinal.php
+<html>
+<body>
+<style>
+body {
+  background-image: url("phpbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: 100%; 
+}
+table, th, td {
+  border: 4px solid #4E2246;
+  border-collapse: collapse;
+}
+</style>
+
+<body text="#424672" >
+<?php
+$con=mysqli_connect("localhost","root","","test");
+if(mysqli_connect_error())
+{
+echo "failed to connect".mysqli_connect_error();
+}
+$location=$_POST['location'];
+$landmark=$_POST['landmark'];
+$phonenumber=$_POST['phonenumber'];
+$proptyp=$_POST['proptyp'];
+$bhk=$_POST['bhk'];
+$sqrf =$_POST['sqrf'];
+$pfac=$_POST['pfac'];
+$ga=$_POST['ga'];
+$lf=$_POST['lf'];
+$av=$_POST['av'];
+$aa=$_POST['aa'];
+$filename=$_POST['filename'];
+$Submit=$_POST['Submit'];
+if ($Submit=='Submit')
+{
+mysqli_query($con,$ab="insert into sell values('".$location."','".$landmark."','".$phonenumber."', '".$proptyp."', '".$bhk."','".$sqrf."', '".$pfac."', '".$ga."', '".$lf."', '".$av."','".$aa."', '".$filename."')");
+echo "<h3>Record Noted</h3>";
+echo $row["location"]; 
+echo $row["landmark"]; 
+echo $row["phonenumber"];
+echo $row["proptyp"];
+echo $row["bhk"];
+echo $row["sqrf"];
+echo $row["pfac"];
+echo $row["ga"];
+echo $row["lf"];
+echo $row["av"];
+echo $row["aa"];
+echo $row["filename"];
+
+
+$sql="select * from sell";
+$result= mysqli_query($con,$sql);
+if(mysqli_num_rows($result)>0)
+{
+	echo "<h2><center> Information Provided: </center></h2>";
+	echo "<table border='5'>
+<tr><center>
+<th><h3>location</h3></th>
+<th><h3>landmark</h3></th>
+<th><h3>phonenumber</h3></th>
+<th><h3>Property Type</h3></th>
+<th><h3>Property Details</h3></th>
+<th><h3>Approximate square feet</h3></th>
+<th><h3>Parking Facility </h3></th>
+<th><h3>Government Approved</h3></th>
+<th><h3>Loan facility</h3></th>
+<th><h3>Asset Value</h3></th>
+<th><h3>Advance Amount</h3></th>
+<th><h3>filename</h3></th>
+</center>
+</tr>";
+while($row=mysqli_fetch_assoc($result))
+{
+echo"<tr>";
+echo"<td><h3>".$row["location"]."</h3></td>";
+echo"<td><h3>".$row["landmark"]."</h3></td>";
+echo"<td><h3>".$row["phonenumber"]."</h3></td>";
+echo"<td><h3>".$row["proptyp"]."</h3></td>";
+echo"<td><h3>".$row["bhk"]."</h3></td>";
+echo"<td><h3>".$row["sqrf"]."</h3></td>";
+echo"<td><h3>".$row["pfac"]."</h3></td>";
+echo"<td><h3>".$row["ga"]."</h3></td>";
+echo"<td><h3>".$row["lf"]."</h3></td>";
+echo"<td><h3>".$row["av"]."</h3></td>";
+echo"<td><h3>".$row["aa"]."</h3></td>";
+echo"<td><h3>".$row["filename"]."</h3></td>";
+
+echo"</tr>";
+}
+echo "</table>";
+}
+else
+{
+echo"No rows found";
+}
+}
+mysqli_close($con);
+?>
+</center>
+</body>
+</html>
